@@ -61,5 +61,5 @@ void msg2BatteryLog(const char* szMsg){
     myFile.printf("%s.- %s.\n", strTmp ,szMsg);
     myFile.close();
   }
-
+  Serial.printf("%s.- %s.\n", strTmp ,szMsg);
 }
