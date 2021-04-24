@@ -6,8 +6,8 @@
 
 const char* ssid = "bencab";
 const char* password = "arrabal6";
-//const char *szgLocalizaciones[]={"congelador","carne","pescado",NULL};
-const char *szgLocalizaciones[]={"freezer","meat","fish",NULL};
+const char *szgLocalizaciones[]={"congelador","carne","pescado",NULL};
+//const char *szgLocalizaciones[]={"freezer","meat","fish",NULL};
 
 int wifi_status = 0;
 

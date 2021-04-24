@@ -39,7 +39,7 @@ void setup() {
   InitWifi();
   Sincroniza_download(szLocalizacion);
   loadJson(szLocalizacion);
-  //CloseWifi();
+  CloseWifi();
 
   //Creamos las colas de trabajo
   qTouchScreenQueue = xQueueCreate( 10, sizeof( tp_finger_t ) );
@@ -67,11 +67,12 @@ void setup() {
 
 void loop() {
   
-
+/* 
   Sincroniza_download(szLocalizacion);
   loadJson(szLocalizacion);
-  scrPrincipal.dibuja_top();
   scrPrincipal.dibuja_cuerpo();
+ */
+  scrPrincipal.dibuja_top();
   scrPrincipal.dibuja_flush();
 
   UBaseType_t memoria_usada=uxTaskGetStackHighWaterMark(thEventHandler);
@@ -79,16 +80,16 @@ void loop() {
   memoria_usada=uxTaskGetStackHighWaterMark(thTouchScreenHandler);
   Serial.printf("memoria usada por thTouchScreenHandler %d\n",memoria_usada );
   
-  delay(10000);
-/*  Serial.printf("last update %d\n",(millis()-iLastUpdate));
+  
+  Serial.printf("last update %d\n",(millis()-iLastUpdate));
 
-   delay(60000);
-  if (millis()-iLastUpdate>120000){
+   delay(10000);
+  if (millis()-iLastUpdate>20000){
     canvas.fillRect(315,10,24,24,0);
     canvas.drawPngFile(SD,"/img/sleep.png",315,10);
     canvas.pushCanvas(0,0,UPDATE_MODE_GC16 );
     apagamos();
-  } */
+  } 
       
 
 }
