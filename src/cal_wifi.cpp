@@ -3,11 +3,10 @@
 #include <SD.h>
 #include "cal_interfaces.h"
 #include "producto.hpp"
+#include "private.hpp"
 
-const char* ssid = "bencab";
-const char* password = "arrabal6";
-const char *szgLocalizaciones[]={"congelador","carne","pescado",NULL};
-//const char *szgLocalizaciones[]={"freezer","meat","fish",NULL};
+
+
 
 int wifi_status = 0;
 
@@ -64,7 +63,7 @@ String ultimaDescarga(){
 String ultimaModificacion(){
   String payload="";
   HTTPClient http;
-  String serverPath = "http://192.168.1.34:1880/ultimaModificacion";
+  String serverPath = (String)serverURL + "ultimaModificacion";
   http.begin(serverPath.c_str());
   int httpResponseCode = http.GET();
       
@@ -87,7 +86,7 @@ String ultimaModificacion(){
 //  descargamos el listado de una localizacion
 void descargaLocalizacion(String strLocalizacion){
   HTTPClient http;
-  String serverPath = "http://192.168.1.34:1880/listado?localizacion="+strLocalizacion;
+  String serverPath = (String)serverURL + "listado?localizacion="+strLocalizacion;
   http.begin(serverPath.c_str());
   int httpResponseCode = http.GET();
       
@@ -119,7 +118,7 @@ void Consumidos(){
   Serial.println("Consumidos");
   for(int i =0;i<vProductoSize;i++){
         if(vProductos[i].m_seleccionado){
-          sprintf(szTmp,"http://192.168.1.34:1880/consumeID?id=%d",vProductos[i].m_idproducto);
+          sprintf(szTmp,"%sconsumeID?id=%d",serverURL ,vProductos[i].m_idproducto);
           Serial.printf("Consumidos %d\n",vProductos[i].m_idproducto);
           Serial.println(szTmp);
           http.begin(szTmp);
