@@ -12,6 +12,7 @@ class pantalla{
     void dibuja_cuerpo();
     void dibuja_menu();
     void dibuja_flush();
+    void dibuja_apagado();
     void boton1();
     void boton2();
     void boton3();
