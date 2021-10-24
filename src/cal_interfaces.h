@@ -6,6 +6,7 @@ void tskTouchScreen(void * parameter );
 void tskEventHandler(void * parameter );
 
 void InitWifi();
+void updateTime();
 void Sincroniza_download(const char *);
 void CloseWifi();
 

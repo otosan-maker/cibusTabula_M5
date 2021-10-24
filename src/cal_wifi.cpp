@@ -1,11 +1,12 @@
 #include <wifi.h>
 #include <HTTPClient.h>
+#include <M5EPD.h>
 #include <SD.h>
 #include "cal_interfaces.h"
 #include "producto.hpp"
 #include "private.hpp"
-
-
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 
 int wifi_status = 0;
@@ -34,6 +35,35 @@ void InitWifi(){
 }
 
 
+
+//update date time from NTP server
+void updateTime(){
+  WiFiUDP ntpUDP;
+  NTPClient timeClient(ntpUDP);
+  rtc_time_t RTCtime;
+  rtc_date_t RTCDate;
+
+  timeClient.begin();
+  timeClient.setTimeOffset(7200);
+  while(!timeClient.update()) {
+    timeClient.forceUpdate();
+  }
+
+  RTCtime.hour = timeClient.getHours();
+  RTCtime.min  = timeClient.getMinutes();
+  RTCtime.sec  = timeClient.getSeconds();
+  time_t rawtime = timeClient.getEpochTime();
+  struct tm * ti;
+  ti = localtime (&rawtime);
+
+  RTCDate.mon = (ti->tm_mon + 1) < 10 ? 0 + (ti->tm_mon + 1) : (ti->tm_mon + 1);
+  RTCDate.day = (ti->tm_mday) < 10 ? 0 + (ti->tm_mday) : (ti->tm_mday);
+  RTCDate.year = ti->tm_year + 1900;
+
+
+  M5.RTC.setTime(&RTCtime);
+  M5.RTC.setDate(&RTCDate);
+}
 
 
 //

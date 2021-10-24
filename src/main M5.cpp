@@ -12,6 +12,7 @@ extern char     szLocalizacion[25];
 extern int wifi_status ;
 extern long unsigned int iLastUpdate;
 
+
 M5EPD_Canvas canvas(&M5.EPD);
 
 
@@ -37,6 +38,7 @@ void setup_m5() {
   print_wakeup_reason();
 
   InitWifi();
+  updateTime();
   Sincroniza_download(szLocalizacion);
   loadJson(szLocalizacion);
   CloseWifi();

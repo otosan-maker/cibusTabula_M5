@@ -23,9 +23,9 @@ void pantalla::dibuja_apagado(){
 }
 
 void pantalla::dibuja_top(){
-    char strTmp[100];
     rtc_time_t RTCtime;
     rtc_date_t RTCDate;
+    char strTmp[100];
 
     pCanvas->setTextSize(3);
     sprintf(strTmp,"%d",M5.getBatteryVoltage());
@@ -47,6 +47,7 @@ void pantalla::dibuja_top(){
     M5.RTC.getDate(&RTCDate);
     
     sprintf(strTmp,"%02d/%02d/%d %d:%02d",RTCDate.day,RTCDate.mon,RTCDate.year,RTCtime.hour,RTCtime.min );
+    Serial.printf("fecha: %s\n",strTmp);
     pCanvas->drawString(strTmp, 10, 14);
     
 }
@@ -66,7 +67,10 @@ void pantalla::dibuja_cuerpo(){
     pCanvas->drawString( szLocal, 150, 65);
     pCanvas->fillRect(10,102,500,3,15);
     pCanvas->setTextSize(3);
-    for(int i =iPrimerElemento;(i<20+iPrimerElemento);i++){
+    int ultimoElemento=vProductoSize;
+    if ((20+iPrimerElemento)<vProductoSize )
+        ultimoElemento=20+iPrimerElemento;
+    for(int i =iPrimerElemento;(i<ultimoElemento);i++){
         int iLocalizacion = i - iPrimerElemento;
         if(vProductos[i].m_seleccionado)
             pCanvas->drawPngFile(SD,"/img/radio_button_checked.png", 20, 110+iLocalizacion*35);
@@ -140,9 +144,12 @@ void pantalla::boton5(){
 }
 
 void pantalla::pgUp(){
+    
     iPrimerElemento+=3;
     if(iPrimerElemento>vProductoSize-19)
         iPrimerElemento=vProductoSize-19;
+    if(iPrimerElemento<0)
+        iPrimerElemento=0;
     Serial.printf("pgUp::cambiamos el primer elemento a  %d\n",iPrimerElemento);
     dibuja_cuerpo();
     dibuja_flush();

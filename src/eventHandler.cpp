@@ -6,7 +6,7 @@
 extern QueueHandle_t qTouchScreenQueue;
 extern M5EPD_Canvas canvas;
 extern pantalla scrPrincipal;
-extern int iLastUpdate;
+extern long unsigned int iLastUpdate;
 extern int iPrimerElemento;
 
 String strFileName="";
