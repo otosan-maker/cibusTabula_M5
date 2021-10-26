@@ -43,20 +43,22 @@ void guardaEstado(){
   fEstado.close();
 }
 
-
+extern   rtc_time_t mRTCtime;
 void apagamos(){
-  rtc_time_t RTCtime;
-  M5.RTC.getTime(&RTCtime);
+  
   uint64_t iTime2Sleep = TIME_TO_SLEEP;
   guardaEstado();
   writeBatt2SD();
-if ((RTCtime.hour>22) || (RTCtime.hour<6) ){
+if ((mRTCtime.hour>22) || (mRTCtime.hour<6) ){
     msg2BatteryLog("apagado largo");
     iTime2Sleep = 3600;
   }else{
     msg2BatteryLog("apagado pequeño");
     iTime2Sleep = 18000;
   }
+  delay(200);
+  M5.shutdown(iTime2Sleep);
+
   esp_sleep_enable_timer_wakeup(uS_TO_S_FACTOR*iTime2Sleep);
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_36, LOW); // TOUCH_INT
   gpio_hold_en(GPIO_NUM_2); // M5EPD_MAIN_PWR_PIN

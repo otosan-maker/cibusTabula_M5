@@ -22,14 +22,19 @@ void pantalla::dibuja_apagado(){
     pCanvas->pushCanvas(0,0,UPDATE_MODE_GC16 );
 }
 
-void pantalla::dibuja_top(){
-    rtc_time_t RTCtime;
-    rtc_date_t RTCDate;
-    char strTmp[100];
+extern   rtc_time_t mRTCtime;
+extern   rtc_date_t mRTCDate;
 
+void pantalla::dibuja_top(){
+    char strTmp[100];
+     
     pCanvas->setTextSize(3);
     sprintf(strTmp,"%d",M5.getBatteryVoltage());
     pCanvas->drawString(strTmp, 360, 14);
+    sprintf(strTmp,"%02d/%02d/%d %d:%02d",mRTCDate.day,mRTCDate.mon,mRTCDate.year,mRTCtime.hour,mRTCtime.min );
+    Serial.printf("fecha: %s\n",strTmp);
+    pCanvas->drawString(strTmp, 10, 14);
+
     if (M5.getBatteryVoltage()>4250){
          pCanvas->drawBmpFile(SD,"/img/bateria_4.bmp",450,10);
     }else if (M5.getBatteryVoltage()>4000){
@@ -42,14 +47,6 @@ void pantalla::dibuja_top(){
          pCanvas->drawBmpFile(SD,"/img/bateria_4.bmp",450,10);
     }
     pCanvas->drawPngFile(SD,"/img/despierto.png",315,10);
-
-    M5.RTC.getTime(&RTCtime);
-    M5.RTC.getDate(&RTCDate);
-    
-    sprintf(strTmp,"%02d/%02d/%d %d:%02d",RTCDate.day,RTCDate.mon,RTCDate.year,RTCtime.hour,RTCtime.min );
-    Serial.printf("fecha: %s\n",strTmp);
-    pCanvas->drawString(strTmp, 10, 14);
-    
 }
 
 void pantalla::set_canvas(M5EPD_Canvas *ppCanvas){
@@ -97,6 +94,9 @@ void pantalla::dibuja_menu(){
     pCanvas->drawBmpFile(SD,"/img/descarga.bmp",320,861);
     pCanvas->drawBmpFile(SD,"/img/apagar.bmp",420,861);
 }
+
+
+
 
 
 void pantalla::dibuja_flush(){
